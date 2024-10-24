@@ -1,0 +1,317 @@
+openapi: 3.0.3
+info:
+  title: View Service API
+  description: API to manage View and recommended entities.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8082/view_api
+    description: main local server
+paths:
+  /users/{userId}/profiles/{profileId}/views:
+    get:
+      summary: Get the list of views for a specific profile
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: ID of the user
+        - in: path
+          name: profileId
+          required: true
+          schema:
+            type: integer
+          description: ID of the profile
+      responses:
+        '200':
+          description: List of views for the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/View'
+
+    post:
+      summary: Add a new view record for a specific profile
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: ID of the user
+        - in: path
+          name: profileId
+          required: true
+          schema:
+            type: integer
+          description: ID of the profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/View'
+      responses:
+        '201':
+          description: View successfully added
+
+  /users/{userId}/profiles/{profileId}/views/{filmID}:
+      get:
+        summary: Get details of a specific view record for a film
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+          - in: path
+            name: filmID
+            required: true
+            schema:
+              type: integer
+            description: ID of the film
+        responses:
+          '200':
+            description: View details for the film
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/View'
+
+      put:
+        summary: Replace the view record for a film
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+          - in: path
+            name: filmID
+            required: true
+            schema:
+              type: integer
+            description: ID of the film
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/View'
+        responses:
+          '200':
+            description: View successfully updated
+
+
+      delete:
+        summary: Delete the view record for a film
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+          - in: path
+            name: filmID
+            required: true
+            schema:
+              type: integer
+            description: ID of the film
+        responses:
+          '204':
+            description: View successfully deleted
+
+  /users/{userId}/profiles/{profileId}/recommended:
+      get:
+        summary: Get the list of recommended films for a specific profile
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+        responses:
+          '200':
+            description: List of recommended films for the profile
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Recommended'
+
+      post:
+        summary: Add a new recommendation for a film to a specific profile
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommended'
+        responses:
+          '201':
+            description: Recommendation successfully added
+
+  /users/{userId}/profiles/{profileId}/recommended/{filmID}:
+      get:
+        summary: Get details of a specific recommended film for a profile
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+          - in: path
+            name: filmID
+            required: true
+            schema:
+              type: integer
+            description: ID of the recommended film
+        responses:
+          '200':
+            description: Recommendation details for the film
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Recommended'
+
+      put:
+        summary: Replace the recommendation for a film
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+          - in: path
+            name: filmID
+            required: true
+            schema:
+              type: integer
+            description: ID of the recommended film
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommended'
+        responses:
+          '200':
+            description: Recommendation successfully updated
+
+
+      delete:
+        summary: Delete the recommendation for a film
+        parameters:
+          - in: path
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: ID of the user
+          - in: path
+            name: profileId
+            required: true
+            schema:
+              type: integer
+            description: ID of the profile
+          - in: path
+            name: filmID
+            required: true
+            schema:
+              type: integer
+            description: ID of the recommended film
+        responses:
+          '204':
+            description: Recommendation successfully deleted
+
+
+components:
+  schemas:
+    View:
+      type: object
+      properties:
+        profile:
+          type: object
+        filmID:
+          type: integer
+          description: Unique identifier for the viewed film
+        timesOfTheFilm:
+          type: integer
+          description: Number of times the film has been viewed
+        isFinished:
+          type: boolean
+          description: Indicates whether the film has been finished
+
+    Recommended:
+      type: object
+      properties:
+        profile:
+          type: object
+        filmID:
+          type: integer
+          description: Unique identifier for the recommended film
+        recommendationType:
+          type: string
+          description: Type of recommendation (e.g., "Trending", "Personalized", "Editor's Pick")
+        viewed:
+          type: boolean
+          description: Indicates whether the film has already been viewed by the profile
